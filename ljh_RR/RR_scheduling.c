@@ -9,6 +9,9 @@ typedef struct _process {
 	int turnaround_time;
 } Process;
 
+void process_init(Process p_struct_arr[], int p_cnt);
+int comp_with_arrival_time(const void *x, const void *y);
+void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len);
 
 int main(void) {
 	FILE *rfp;
@@ -116,12 +119,6 @@ int main(void) {
 
 	return 0;
 }
-
-
-void process_init(Process p_struct_arr[], int p_cnt);
-int comp_with_arrival_time(const void *x, const void *y);
-void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len);
-
 
 void process_init(Process p_struct_arr[], int p_cnt) {
 	for (int i = 0; i < p_cnt; i++) {
