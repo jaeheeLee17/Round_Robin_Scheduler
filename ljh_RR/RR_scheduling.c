@@ -9,27 +9,6 @@ typedef struct _process {
 	int turnaround_time;
 } Process;
 
-void process_init(Process p_struct_arr[], int p_cnt) {
-	for (int i = 0; i < p_cnt; i++) {
-		p_struct_arr[i].process_id = -1;
-		p_struct_arr[i].arrival_time = 0;
-		p_struct_arr[i].waiting_time = 0;
-		p_struct_arr[i].burst_time = 0;
-		p_struct_arr[i].turnaround_time = 0;
-	}
-}
-
-int comp_with_arrival_time(const void *x, const void *y) {
-	Process *p1 = (Process *)x;
-	Process *p2 = (Process *)y;
-
-	return p1->arrival_time >= p2->arrival_time ?
-	(p1->arrival_time > p2->arrival_time ? 1 : 0) : -1;
-}
-
-void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len) {
-	qsort(p_struct_arr, p_len, sizeof(Process), comp_with_arrival_time);
-}
 
 int main(void) {
 	FILE *rfp;
@@ -136,4 +115,32 @@ int main(void) {
 	free(p_struct_arr);
 
 	return 0;
+}
+
+
+void process_init(Process p_struct_arr[], int p_cnt);
+int comp_with_arrival_time(const void *x, const void *y);
+void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len);
+
+
+void process_init(Process p_struct_arr[], int p_cnt) {
+	for (int i = 0; i < p_cnt; i++) {
+		p_struct_arr[i].process_id = -1;
+		p_struct_arr[i].arrival_time = 0;
+		p_struct_arr[i].waiting_time = 0;
+		p_struct_arr[i].burst_time = 0;
+		p_struct_arr[i].turnaround_time = 0;
+	}
+}
+
+int comp_with_arrival_time(const void *x, const void *y) {
+	Process *p1 = (Process *)x;
+	Process *p2 = (Process *)y;
+
+	return p1->arrival_time >= p2->arrival_time ?
+	(p1->arrival_time > p2->arrival_time ? 1 : 0) : -1;
+}
+
+void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len) {
+	qsort(p_struct_arr, p_len, sizeof(Process), comp_with_arrival_time);
 }
