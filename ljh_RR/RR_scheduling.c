@@ -130,17 +130,25 @@ int main(void) {
 	printf("\t+------+-----+\n");
 	printf("\t| time | PID |\n");
 	
-	while(time < w_time){
+	while(time <= w_time){
 		//printf("\t+-%3d--+-----+\n",j);
 		for(p_id=0; p_id<p_cnt; p_id++){
 			for(int k=0; k < time_quantum; k++){
-				if(p_struct_arr[p_id].burst_time > time_quantum){
+
+				if(p_struct_arr[p_id].burst_time == 0){
+					break;
+				}
+
+				else if(p_struct_arr[p_id].burst_time > time_quantum){
 					for(int t=0; t < time_quantum; t++){
 						printf("\t+ %3d  |%3d  +\n",time, p_id);
 						time++;
 						p_struct_arr[p_id].burst_time--;
 					}
+					//p_struct_arr[p_id].burst_time = p_struct_arr[p_id].burst_time - time_quantum;
+					printf("\t+------|-----+\n");
 					break;	
+				
 				}
 				else if(p_struct_arr[p_id].burst_time <= time_quantum){
 					for(int t1=0; t1 < p_struct_arr[p_id].burst_time; t1++){
@@ -149,11 +157,10 @@ int main(void) {
 						//p_struct_arr[p_id].burst_time--;
 					}
 					p_struct_arr[p_id].burst_time = 0;
+					printf("\t+------|-----+\n");
 					break;
 				}
-				else if(p_struct_arr[p_id].burst_time == 0){
-					break;
-				}
+				
 
 			}
 			//p_id = 0;
@@ -161,7 +168,7 @@ int main(void) {
 		
 	}
 
-	printf("\t+------+-----+\n");
+
 
 
 	///Gantt chart
