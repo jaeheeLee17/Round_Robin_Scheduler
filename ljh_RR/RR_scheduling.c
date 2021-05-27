@@ -117,6 +117,60 @@ int main(void) {
 	fclose(rfp);
 	free(p_struct_arr);
 
+
+	//Gantt chart
+	int w_time=0;
+	int time = 1;
+	int p_id;
+	for(int i = 0; p_struct_arr[i].process_id != -1; i++){
+		w_time = w_time + p_struct_arr[i].burst_time;
+	}
+	//printf("w_time:%d\n",w_time);
+	printf("\n\nGantt chart\n");
+	printf("\t+------+-----+\n");
+	printf("\t| time | PID |\n");
+	
+	while(time < w_time){
+		//printf("\t+-%3d--+-----+\n",j);
+		for(p_id=0; p_id<p_cnt; p_id++){
+			for(int k=0; k < time_quantum; k++){
+				if(p_struct_arr[p_id].burst_time > time_quantum){
+					for(int t=0; t < time_quantum; t++){
+						printf("\t+ %3d  |%3d  +\n",time, p_id);
+						time++;
+						p_struct_arr[p_id].burst_time--;
+					}
+					break;	
+				}
+				else if(p_struct_arr[p_id].burst_time <= time_quantum){
+					for(int t1=0; t1 < p_struct_arr[p_id].burst_time; t1++){
+						printf("\t+ %3d  |%3d  +\n",time, p_id);
+						time++;
+						//p_struct_arr[p_id].burst_time--;
+					}
+					p_struct_arr[p_id].burst_time = 0;
+					break;
+				}
+				else if(p_struct_arr[p_id].burst_time == 0){
+					break;
+				}
+
+			}
+			//p_id = 0;
+		}
+		
+	}
+
+	printf("\t+------+-----+\n");
+
+
+	///Gantt chart
+
+
+
+
+
+
 	return 0;
 }
 
@@ -141,3 +195,5 @@ int comp_with_arrival_time(const void *x, const void *y) {
 void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len) {
 	qsort(p_struct_arr, p_len, sizeof(Process), comp_with_arrival_time);
 }
+
+
