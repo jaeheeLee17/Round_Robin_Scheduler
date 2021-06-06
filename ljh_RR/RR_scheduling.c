@@ -4,8 +4,9 @@
 typedef struct _process {
 	int process_id;
 	int arrival_time;
-	int waiting_time;
 	int burst_time;
+	int deadline;
+	int waiting_time;
 	int turnaround_time;
 } Process;
 
@@ -28,36 +29,36 @@ int main(void) {
 	process_init(p_struct_arr, p_cnt);
 
 	while (i < p_cnt) {
-		fscanf(rfp, "%d %d %d", &p_struct_arr[i].process_id, &p_struct_arr[i].arrival_time, &p_struct_arr[i].burst_time);
+		fscanf(rfp, "%d %d %d", &p_struct_arr[i].arrival_time, &p_struct_arr[i].burst_time, &p_struct_arr[i].deadline);
 		i++;
 	}
 
 	printf("Sample Process List\n");
-	printf("\t+-----+--------------+-------------+\n");
-	printf("\t| PID | Arrival Time |  Burst Time |\n");
-	printf("\t+-----+--------------+-------------+\n");
-	for (j = 0; p_struct_arr[j].process_id != -1; j++) {
-		printf("\t| %3d |      %3d     |     %3d     |\n",
-				p_struct_arr[j].process_id, p_struct_arr[j].arrival_time, p_struct_arr[j].burst_time);
-		printf("\t+-----+--------------+-------------+\n");
+	printf("\t+--------+-----------------+----------------+--------------+\n");
+	printf("\t|  PID   |  Arrival Time   |   Burst Time   |   Deadline   |\n");
+	printf("\t+--------+-----------------+----------------+--------------+\n");
+	for (j = 0; p_struct_arr[j].burst_time != 0; j++) {
+		p_struct_arr[j].process_id = j;
+		printf("\t| %6d |      %6d     |     %6d     |     %6d   |\n",
+				p_struct_arr[j].process_id, p_struct_arr[j].arrival_time, p_struct_arr[j].burst_time, p_struct_arr[j].deadline);
+		printf("\t+--------+-----------------+----------------+--------------+\n");
 	}
 	printf("\n");
 
 	p_cnt = j;
 	sorting_process_by_arrival_time(p_struct_arr, p_cnt);
 
-	/*
 	printf("Sample Process List\n");
-        printf("\t+-----+--------------+-------------+\n");
-        printf("\t| PID | Arrival Time |  Burst Time |\n");
-        printf("\t+-----+--------------+-------------+\n");
-        for (int i = 0; p_struct_arr[i].process_id != -1; i++) {
-                printf("\t| %3d |      %3d     |     %3d     |\n",
-                                p_struct_arr[i].process_id, p_struct_arr[i].arrival_time, p_struct_arr[i].burst_time);
-                printf("\t+-----+--------------+-------------+\n");
-        }
-        printf("\n");
-	*/
+    printf("\t+--------+-----------------+----------------+--------------+\n");
+    printf("\t|  PID   |  Arrival Time   |   Burst Time   |   Deadline   |\n");
+    printf("\t+--------+-----------------+----------------+--------------+\n");
+    for (int i = 0; p_struct_arr[i].burst_time != 0; i++) {
+		p_struct_arr[i].process_id = i;
+        printf("\t| %6d |      %6d     |     %6d     |     %6d   |\n",
+                p_struct_arr[i].process_id, p_struct_arr[i].arrival_time, p_struct_arr[i].burst_time, p_struct_arr[i].deadline);
+        printf("\t+--------+-----------------+----------------+--------------+\n");
+    }
+    printf("\n");
 
 	printf("Enter the time quantum : ");
 	scanf("%d", &time_quantum);
@@ -101,13 +102,14 @@ int main(void) {
 	}
 
 	printf("\tRound Robin Scheduling Report ( Time Quantum = %d )\n\n", time_quantum);
-	printf("\t+-----+---------------+------------+--------------+-----------------+\n");
-	printf("\t| PID | Arrival Time  | Burst Time | Waiting Time | Turnaround Time |\n");
-	printf("\t+-----+---------------+------------+--------------+-----------------+\n");
+	printf("\t+--------+------------------+---------------+--------------+-----------------+--------------------+\n");
+	printf("\t|  PID   |  Arrival Time    |  Burst Time   |   Deadline   |  Waiting Time   |  Turnaround Time   |\n");
+	printf("\t+--------+------------------+---------------+--------------+-----------------+--------------------+\n");
 
 	for (int i = 0; i < p_cnt; i++) {
-		printf("\t| %3d |      %3d      |     %3d    |      %3d     |        %3d      |\n", p_struct_arr[i].process_id, p_struct_arr[i].arrival_time, p_struct_arr[i].burst_time, p_struct_arr[i].waiting_time, p_struct_arr[i].turnaround_time);
-		printf("\t+-----+---------------+------------+--------------+-----------------+\n");
+		printf("\t| %6d |      %6d      |     %6d    |     %6d   |      %6d     |        %6d      |\n",
+		p_struct_arr[i].process_id, p_struct_arr[i].arrival_time, p_struct_arr[i].burst_time, p_struct_arr[i].deadline, p_struct_arr[i].waiting_time, p_struct_arr[i].turnaround_time);
+		printf("\t+--------+------------------+---------------+--------------+-----------------+--------------------+\n");
 	}
 	printf("\n");
 
@@ -124,8 +126,9 @@ void process_init(Process p_struct_arr[], int p_cnt) {
 	for (int i = 0; i < p_cnt; i++) {
 		p_struct_arr[i].process_id = -1;
 		p_struct_arr[i].arrival_time = 0;
-		p_struct_arr[i].waiting_time = 0;
 		p_struct_arr[i].burst_time = 0;
+		p_struct_arr[i].deadline = 0;
+		p_struct_arr[i].waiting_time = 0;
 		p_struct_arr[i].turnaround_time = 0;
 	}
 }
