@@ -16,7 +16,7 @@ void sorting_process_by_arrival_time(Process p_struct_arr[], int p_len);
 
 int main(void) {
 	FILE *rfp;
-	int i = 0, j = 0, p_cnt = 100;
+	int i = 0, j = 0, p_cnt = 101;
 	int time_quantum;
 	Process *p_struct_arr;
 
@@ -98,6 +98,7 @@ int main(void) {
 			i++;
 		} else {
 			i = 0;
+			cur_time++;
 		}
 	}
 
